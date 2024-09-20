@@ -3,3 +3,9 @@ Coloque aqui todas as versões do seu diagrama de classes. Cada versão deve com
 
 ## Versão 1.0
 ![diagrama1.0](https://github.com/pucmg-aulas/ByteBusters/blob/master/docs/diagramas/Relacionamentos1.0.jpeg)
+
+## Versão 1.1
+![diagrama1.1](https://github.com/pucmg-aulas/ByteBusters/blob/master/docs/diagramas/diagrama1.1.png)
+
+## Versão 1.2
+![diagrama1.1](https://github.com/pucmg-aulas/ByteBusters/blob/master/docs/diagramas/diagrama1.2.jpeg)
