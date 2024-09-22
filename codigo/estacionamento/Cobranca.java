@@ -1,5 +1,7 @@
-import java.util.Date;
 package estacionamento;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Cobranca {
 
@@ -7,8 +9,10 @@ public class Cobranca {
     private Date horaSaida;
     private final double PRECO15MIN = 4.00;
     private final double PRECOMAX = 50.00;
+    private Veiculo veiculo;
 
-    public Cobranca(Date horaChegada, Date horaSaida) {
+    public Cobranca(Veiculo veiculo, Date horaChegada, Date horaSaida) {
+        this.veiculo = veiculo;
         this.horaChegada = horaChegada;
         this.horaSaida = horaSaida;
     }
@@ -23,10 +27,9 @@ public class Cobranca {
         double tempoOcupacao = calculaTempoOcupacao();
         double valorTotal;
 
-        // Cálculo do valor a ser cobrado
         if (tempoOcupacao <= 15) {
             valorTotal = PRECO15MIN;
-        } else if (tempoOcupacao > 15 && tempoOcupacao <= 120) { // 120 minutos é o equivalente a 2 horas
+        } else if (tempoOcupacao > 15 && tempoOcupacao <= 180) {
             valorTotal = Math.ceil(tempoOcupacao / 15) * PRECO15MIN;
         } else {
             valorTotal = PRECOMAX;
@@ -36,11 +39,22 @@ public class Cobranca {
     }
 
     public void efetuarPagamento() {
-        double valorTotal = calculaValorTotal();
-        System.out.println("Valor total a ser pago: R$ " + valorTotal);
-        // Implementar lógica para o pagamento
+        if (veiculo.getVagaAtual() != null) {
+            veiculo.removeVaga();
+        }
     }
 
+    public void mostrarCobranca() {
+        SimpleDateFormat dataFormatada = new SimpleDateFormat("HH:mm:ss"); //("dd/MM/yyyy HH:mm:ss") Para mostrar dia/mês/ano também
+        String chegadaFormatada = dataFormatada.format(horaChegada);
+        String saidaFormatada = dataFormatada.format(horaSaida);
+
+        System.out.println("\nPlaca do veículo: " + veiculo.getPlaca());
+        System.out.println("Hora de chegada: " + chegadaFormatada);
+        System.out.println("Hora de saída: " + saidaFormatada);
+        System.out.println("Tempo de ocupação: " + calculaTempoOcupacao() + " minutos");
+        System.out.println("Valor total a ser pago: R$ " + calculaValorTotal());
+    }
     // Getters e setters
     public Date getHoraChegada() {
         return horaChegada;
@@ -57,6 +71,4 @@ public class Cobranca {
     public void setHoraSaida(Date horaSaida) {
         this.horaSaida = horaSaida;
     }
-}
-
 }
