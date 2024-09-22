@@ -1,63 +1,56 @@
 package estacionamento;
 
-import com.sun.source.tree.IfTree;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class Cliente 
-{
-    // Atributos
+public class Cliente {
     private String nome;
-    private int idCliente;
-    private List<Veiculo> veiculo;
+    private List<Veiculo> veiculos;
+    private final int idCliente;
+    private static int contadorClientes = 0;
 
-    //Construtor
-    public Cliente(String nome, int idCliente)
-    {
+    public Cliente(String nome) {
         this.nome = nome;
-        this.idCliente = idCliente;
-        this.veiculo = new ArrayList<>();
+        this.veiculos = new ArrayList<>();
+        this.idCliente = gerarIdCliente();
     }
 
-    //Registrar o veículo
-    public void registrarVeiculo(Veiculo veiculo)
-    {
-        veiculo.add(veiculo);
-        System.out.println("Veiculo com placa " + veiculo.getPlaca() + " registrado para o cliente " + nome);
+    private int gerarIdCliente() {
+        contadorClientes++;
+        return contadorClientes;
     }
 
-    //Metodo para calcular o Id do cliente
-    public void calcularIdCliente(){
-        this.idCliente = nome.hashCode();
-        System.out.println("Id do cliente atualizado: " + idCliente);
+    public void registrarVeiculo(Veiculo veiculo) {
+        veiculos.add(veiculo);
     }
 
-    //Getters e Setters
-    public String getNome()
-    {
+    public void mostraVeiculosDoCliente() {
+    System.out.println("\nVeículos registrados para o cliente " + nome + ":");
+    if (veiculos.isEmpty()) {
+        System.out.println("Nenhum veículo registrado.");
+    } else {
+        for (Veiculo veiculo : veiculos) {
+            System.out.println("Placa: " + veiculo.getPlaca());
+        }
+      }
+    }
+
+    public String getNome() {
         return nome;
     }
-    public void setNome(String nome)
-    {
+
+    public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public int getIdCliente()
-    {
+    public int getIdCliente() {
         return idCliente;
     }
-    public void setIdCliente(int idCliente)
-    {
-        this.idCliente = idCliente;
-    }
 
-    public List<Veiculo> getVeiculo()
-    {
+    public List<Veiculo> getVeiculos() {
         return veiculos;
     }
-    public void setVeiculos(List<Veiculo> veiculo)
-    {
-        this.veiculo = veiculo;
-    }
 
+    public void setVeiculos(List<Veiculo> veiculos) {
+        this.veiculos = veiculos;
+    }
 }
