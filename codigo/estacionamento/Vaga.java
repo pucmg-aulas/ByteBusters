@@ -1,11 +1,11 @@
 package estacionamento;
 
 public class Vaga {
-    private String id;
-    private String fila;
-    private int numVaga;
-    private boolean disponivel;
-
+    protected String id;
+    protected String fila;
+    protected int numVaga;
+    protected boolean disponivel;
+    protected double fatorPreco = 1.0;  
     public Vaga(String fila, int numVaga) {
         this.fila = fila;
         this.numVaga = numVaga;
@@ -20,7 +20,7 @@ public class Vaga {
     public String getId() {
         return id;
     }
-    
+
     public boolean estaDisponivel() {
         return disponivel;
     }
@@ -32,5 +32,8 @@ public class Vaga {
     public void desocupaVaga() {
         this.disponivel = true;
     }
-    
+
+    public double getFatorPreco() {
+        return fatorPreco;
+    }
 }
