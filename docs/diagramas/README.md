@@ -12,3 +12,6 @@ Coloque aqui todas as versões do seu diagrama de classes. Cada versão deve com
 
 ## Versão 1.3
 ![diagrama1.3](https://github.com/pucmg-aulas/ByteBusters/blob/master/docs/diagramas/diagrama1.3.png)
+
+## Versão 1.4
+![diagrama1.4](https://github.com/pucmg-aulas/ByteBusters/blob/master/docs/diagramas/diagrama1.4.png)
