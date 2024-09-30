@@ -18,11 +18,27 @@ public class Estacionamento {
         return vagas;
     }
 
-    public void adicionarVaga(String fila, int numVaga) {
-        Vaga vaga = new Vaga(fila, numVaga);
-        vagas.add(vaga);
-        quantVagas = vagas.size();
+    public void adicionarVaga(String fila, int numVaga, String tipoVaga) {
+    Vaga vaga;
+    
+    switch (tipoVaga.toLowerCase()) {
+        case "idoso":
+            vaga = new VagaIdoso(fila, numVaga);
+            break;
+        case "pcd":
+            vaga = new VagaPCD(fila, numVaga);
+            break;
+        case "vip":
+            vaga = new VagaVIP(fila, numVaga);
+            break;
+        default:
+            vaga = new Vaga(fila, numVaga);  
     }
+    
+    vagas.add(vaga);
+    quantVagas = vagas.size();
+}
+
 
     public void mostrarVagas() {
         System.out.println("\nVagas no Estacionamento " + nome + ":");
