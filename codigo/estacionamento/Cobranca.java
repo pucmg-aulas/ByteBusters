@@ -26,19 +26,22 @@ public class Cobranca {
     }
 
     public double calculaValorTotal() {
-        double tempoOcupacao = calculaTempoOcupacao();
-        double valorTotal;
+    double tempoOcupacao = calculaTempoOcupacao();
+    double valorTotal;
 
-        if (tempoOcupacao <= 15) {
-            valorTotal = PRECO15MIN;
-        } else if (tempoOcupacao > 15 && tempoOcupacao <= 180) {
-            valorTotal = Math.ceil(tempoOcupacao / 15) * PRECO15MIN;
-        } else {
-            valorTotal = PRECOMAX;
-        }
-
-        return valorTotal;
+    if (tempoOcupacao <= 15) {
+        valorTotal = PRECO15MIN;
+    } else if (tempoOcupacao > 15 && tempoOcupacao <= 180) {
+        valorTotal = Math.ceil(tempoOcupacao / 15) * PRECO15MIN;
+    } else {
+        valorTotal = PRECOMAX;
     }
+
+    valorTotal *= vaga.getFatorPreco();
+
+    return valorTotal;
+}
+
 
     public void efetuarPagamento() {
         if (vaga != null) {
