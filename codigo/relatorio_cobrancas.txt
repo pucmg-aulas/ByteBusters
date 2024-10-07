@@ -1,0 +1,35 @@
+Placa do veículo: AAA1111
+Vaga: C03
+Hora de chegada: 02:00:38
+Hora de saída: 02:00:45
+Tempo de ocupação: 0 minutos
+Valor total a ser pago: R$ 4.0
+----------------------------
+Placa do veículo: CCC3333
+Vaga: A01
+Hora de chegada: 02:01:32
+Hora de saída: 02:01:38
+Tempo de ocupação: 0 minutos
+Valor total a ser pago: R$ 4.0
+----------------------------
+Placa do veículo: AAA1111
+Vaga: A01
+Hora de chegada: 02:26:15
+Hora de saída: 02:26:20
+Tempo de ocupação: 0 minutos
+Valor total a ser pago: R$ 4.0
+----------------------------
+Placa do veículo: AAA1111
+Vaga: C03
+Hora de chegada: 12:19:01
+Hora de saída: 12:19:04
+Tempo de ocupação: 0 minutos
+Valor total a ser pago: R$ 4.0
+----------------------------
+Placa do veículo: AAA1111
+Vaga: C03
+Hora de chegada: 12:21:10
+Hora de saída: 12:21:19
+Tempo de ocupação: 0 minutos
+Valor total a ser pago: R$ 4.8
+----------------------------
