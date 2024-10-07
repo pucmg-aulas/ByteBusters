@@ -69,7 +69,7 @@ public class MenuEstacionamento {
         String placa = scanner.nextLine();
         System.out.println("Digite o ID da vaga onde deseja estacionar:");
         String idVaga = scanner.nextLine();
-        Veiculo veiculo = new Veiculo(placa, "Cliente ID"); // Simplicidade, supondo um cliente já definido
+        Veiculo veiculo = new Veiculo(placa, "Cliente ID");
         if (estacionamento.estacionarVeiculo(veiculo, idVaga)) {
             System.out.println("Veículo estacionado com sucesso.");
         } else {
