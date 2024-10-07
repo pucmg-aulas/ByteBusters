@@ -19,7 +19,7 @@ public class DadosEstacionamento {
     }
 
     public static void carregarVagas(Estacionamento estacionamento, String nomeArquivo) {
-        estacionamento.limparVagas(); // Assume que esse método existe para limpar a lista de vagas
+        estacionamento.limparVagas();
         try (BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
