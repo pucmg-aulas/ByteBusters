@@ -1,9 +1,12 @@
 package estacionamento;
 
 public class Normal extends Vaga {
+    public Normal(String fila, int numero) {
+        super(fila, numero);
+    }
 
-    public Normal(String fila, int numVaga) {
-        super(fila, numVaga, "Normal");
-        this.fatorPreco = 1.0;
+    @Override
+    public String getTipoVaga() {
+        return "Normal";
     }
 }
