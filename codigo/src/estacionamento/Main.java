@@ -1,159 +1,64 @@
 package estacionamento;
 
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Main {
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        Estacionamento a = new Estacionamento("Estacionamento A", "Rua A");
-
-        Vaga A01 = new Normal("A", 1);
-        Vaga A02 = new Normal("A", 2);
-        Vaga A03 = new Idoso("A", 3);
-        
-        Vaga B01 = new Normal("B", 1);
-        Vaga B02 = new Normal("B", 2);
-        Vaga B03 = new Pcd("B", 3);
-        
-        Vaga C01 = new Normal("C", 1);
-        Vaga C02 = new Normal("C", 2);
-        Vaga C03 = new Vip("C", 3);
-
-        a.adicionarVaga(A01);
-        a.adicionarVaga(A02);
-        a.adicionarVaga(A03);
-        a.adicionarVaga(B01);
-        a.adicionarVaga(B02);
-        a.adicionarVaga(B03);
-        a.adicionarVaga(C01);
-        a.adicionarVaga(C02);
-        a.adicionarVaga(C03);
-
-        // Lista de cobranças ativas
-        List<Cobranca> cobrancas = new ArrayList<>();
-
-        Cliente joao = new Cliente("João");
-        Veiculo veiculoJoao1 = new Veiculo("AAA1111");
-        Veiculo veiculoJoao2 = new Veiculo("BBB2222");
-        joao.registrarVeiculo(veiculoJoao1);
-        joao.registrarVeiculo(veiculoJoao2);
-
-        Cliente maria = new Cliente("Maria");
-        Veiculo veiculoMaria1 = new Veiculo("CCC3333");
-        maria.registrarVeiculo(veiculoMaria1);
+        Estacionamento estacionamento = new Estacionamento("Estacionamento A", "Rua A"); // Atualizado
+        List<Cliente> clientes = carregarClientes();
+        Cliente.atualizarContador(clientes.stream().mapToInt(Cliente::getIdCliente).max().orElse(0));
 
         boolean executando = true;
 
         while (executando) {
             System.out.println("\nEscolha uma opção:");
-            System.out.println("1. Mostrar vagas");
-            System.out.println("2. Ocupar vaga");
-            System.out.println("3. Desocupar vaga e executar cobrança");
-            System.out.println("4. Mostrar relatório");
+            System.out.println("1. Cadastrar Cliente");
+            System.out.println("2. Cadastrar Veículo");
+            System.out.println("3. Criar Vaga");
+            System.out.println("4. Mostrar Vagas");
+            System.out.println("5. Ocupar Vaga");
+            System.out.println("6. Desocupar Vaga e Executar Cobrança");
+            System.out.println("7. Mostrar Relatório");
             System.out.println("0. Sair");
 
             int opcao = scanner.nextInt();
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
-                    // Mostrar vagas
-                    a.mostrarEstacionamento();
-                    a.mostrarVagas();
+                    Cliente novoCliente = criarCliente(scanner);
+                    clientes.add(novoCliente);
+                    System.out.println("Cliente cadastrado com sucesso!");
+                    salvarClientes(clientes);
                     break;
 
                 case 2:
-                    // Ocupar vaga
-                    System.out.println("Escolha o cliente:");
-                    System.out.println("" + joao.getIdCliente() + ". " + joao.getNome());
-                    System.out.println("" + maria.getIdCliente() + ". " + maria.getNome());
-
-                    int clienteOpcao = scanner.nextInt();
-                    Cliente clienteSelecionado = clienteOpcao == joao.getIdCliente() ? joao : maria;
-
-                    clienteSelecionado.mostraVeiculosDoCliente();
-                    System.out.println("Escolha o veículo pelo número da placa:");
-                    String placaEscolhida = scanner.next().toUpperCase();
-
-                    Veiculo veiculoEscolhido = clienteSelecionado.getVeiculos().stream()
-                        .filter(v -> v.getPlaca().equals(placaEscolhida))
-                        .findFirst().orElse(null);
-
-                    if (veiculoEscolhido == null) {
-                        System.out.println("Veículo não encontrado.");
-                        break;
-                    }
-
-                    System.out.println("Escolha o tipo de vaga:");
-                    System.out.println("1. Normal");
-                    System.out.println("2. Idoso");
-                    System.out.println("3. PCD");
-                    System.out.println("4. VIP");
-
-                    int tipoVagaOpcao = scanner.nextInt();
-                    String tipoVagaEscolhida;
-                    switch (tipoVagaOpcao) {
-                        case 1:
-                            tipoVagaEscolhida = "Normal";
-                            break;
-                        case 2:
-                            tipoVagaEscolhida = "Idoso";
-                            break;
-                        case 3:
-                            tipoVagaEscolhida = "PCD";
-                            break;
-                        case 4:
-                            tipoVagaEscolhida = "VIP";
-                            break;
-                        default:
-                            System.out.println("Opção de vaga inválida.");
-                            continue;
-                    }
-
-                    // Escolhe a primeira vaga disponível do tipo selecionado
-                    Optional<Vaga> vagaDisponivel = a.getVagas().stream()
-                        .filter(Vaga::estaDisponivel)
-                        .filter(v -> v.getTipoVaga().equals(tipoVagaEscolhida))
-                        .findFirst();
-
-                    if (vagaDisponivel.isPresent()) {
-                        Vaga vagaEscolhida = vagaDisponivel.get();
-                        vagaEscolhida.ocupaVaga();
-                        Cobranca novaCobranca = new Cobranca(veiculoEscolhido, vagaEscolhida, new Date());
-                        cobrancas.add(novaCobranca);
-                        System.out.println("Vaga " + vagaEscolhida.getId() + " (" + vagaEscolhida.getTipoVaga() + ") ocupada pelo veículo " + veiculoEscolhido.getPlaca());
-                    } else {
-                        System.out.println("Não há vagas disponíveis do tipo selecionado.");
-                    }
+                    cadastrarVeiculo(scanner, clientes);
                     break;
 
                 case 3:
-                    // Desocupar vaga e executar cobrança
-                    System.out.println("Escolha o veículo pelo número da placa para desocupar:");
-                    String placaParaDesocupar = scanner.next().toUpperCase();
-
-                    Optional<Cobranca> cobrancaOptional = cobrancas.stream()
-                        .filter(c -> c.getVeiculo().getPlaca().equals(placaParaDesocupar))
-                        .findFirst();
-
-                    if (cobrancaOptional.isPresent()) {
-                        Cobranca cobranca = cobrancaOptional.get();
-                        cobranca.registrarSaida(new Date());
-                        cobranca.mostrarCobranca();
-
-                        cobranca.getVaga().desocupaVaga();
-                        cobrancas.remove(cobranca);
-
-                        System.out.println("Vaga desocupada e cobrança realizada.");
-                    } else {
-                        System.out.println("Nenhuma cobrança encontrada para o veículo.");
-                    }
+                    criarVaga(scanner, estacionamento);
                     break;
-                    
+
                 case 4:
-                	Cobranca.lerRelatorio();
-                	break;
+                    estacionamento.mostrarEstacionamento();
+                    estacionamento.mostrarVagas();
+                    break;
+
+                case 5:
+                    ocuparVaga(scanner, clientes, estacionamento);
+                    break;
+
+                case 6:
+                    desocuparVaga(scanner, estacionamento);
+                    break;
+
+                case 7:
+                    Cobranca.lerRelatorio();
+                    break;
 
                 case 0:
                     executando = false;
@@ -166,5 +71,195 @@ public class Main {
         }
 
         scanner.close();
+    }
+
+    public static Cliente criarCliente(Scanner scanner) {
+        System.out.print("Digite o nome do cliente: ");
+        String nome = scanner.nextLine();
+        return new Cliente(nome);
+    }
+
+    public static void cadastrarVeiculo(Scanner scanner, List<Cliente> clientes) {
+        System.out.println("Escolha o cliente:");
+        for (Cliente cliente : clientes) {
+            System.out.println(cliente.getIdCliente() + ". " + cliente.getNome());
+        }
+
+        int clienteOpcao = scanner.nextInt();
+        scanner.nextLine();
+        Cliente clienteSelecionado = clientes.stream()
+                .filter(c -> c.getIdCliente() == clienteOpcao)
+                .findFirst()
+                .orElse(null);
+
+        if (clienteSelecionado != null) {
+            System.out.print("Digite a placa do veículo: ");
+            String placa = scanner.nextLine().toUpperCase();
+            Veiculo novoVeiculo = new Veiculo(placa);
+            clienteSelecionado.registrarVeiculo(novoVeiculo);
+            System.out.println("Veículo registrado com sucesso!");
+            salvarClientes(clientes);
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+    }
+
+    public static void criarVaga(Scanner scanner, Estacionamento estacionamento) {
+        System.out.println("Escolha o tipo de vaga:");
+        System.out.println("1. Normal");
+        System.out.println("2. Idoso");
+        System.out.println("3. PCD");
+        System.out.println("4. VIP");
+
+        int tipoVaga = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Digite a letra da fila (A, B ou C): ");
+        String fila = scanner.nextLine().toUpperCase();
+
+        System.out.print("Digite o número da vaga: ");
+        String numeroVaga = scanner.nextLine();
+
+        Vaga novaVaga;
+
+        switch (tipoVaga) {
+            case 1:
+                novaVaga = new Normal(fila, Integer.parseInt(numeroVaga));
+                break;
+            case 2:
+                novaVaga = new Idoso(fila, Integer.parseInt(numeroVaga));
+                break;
+            case 3:
+                novaVaga = new Pcd(fila, Integer.parseInt(numeroVaga));
+                break;
+            case 4:
+                novaVaga = new Vip(fila, Integer.parseInt(numeroVaga));
+                break;
+            default:
+                System.out.println("Tipo de vaga inválido.");
+                return;
+        }
+
+        estacionamento.adicionarVaga(novaVaga);
+        System.out.println("Vaga criada com sucesso: " + novaVaga.getId());
+    }
+
+    public static void ocuparVaga(Scanner scanner, List<Cliente> clientes, Estacionamento estacionamento) {
+        System.out.println("Escolha o cliente:");
+        for (Cliente cliente : clientes) {
+            System.out.println(cliente.getIdCliente() + ". " + cliente.getNome());
+        }
+
+        Cliente clienteSelecionado = null;
+        while (clienteSelecionado == null) {
+            try {
+                int clienteOpcao = scanner.nextInt();
+                scanner.nextLine();
+
+                clienteSelecionado = clientes.stream()
+                        .filter(c -> c.getIdCliente() == clienteOpcao)
+                        .findFirst()
+                        .orElse(null);
+
+                if (clienteSelecionado == null) {
+                    System.out.println("Cliente não encontrado. Tente novamente.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, digite um número correspondente ao cliente.");
+                scanner.nextLine();
+            }
+        }
+
+        // Solicita a placa do veículo que está ocupando a vaga
+        System.out.print("Digite a placa do veículo: ");
+        String placaVeiculo = scanner.nextLine().toUpperCase();
+        Veiculo veiculo = clienteSelecionado.getVeiculos().stream()
+                .filter(v -> v.getPlaca().equals(placaVeiculo))
+                .findFirst()
+                .orElse(null);
+
+        if (veiculo == null) {
+            System.out.println("Veículo não encontrado para o cliente.");
+            return;
+        }
+
+        System.out.println("Escolha o tipo de vaga:");
+        System.out.println("1. Normal");
+        System.out.println("2. Idoso");
+        System.out.println("3. PCD");
+        System.out.println("4. VIP");
+
+        int tipoVaga = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Digite a letra da fila (A, B ou C): ");
+        String fila = scanner.nextLine().toUpperCase();
+
+        System.out.print("Digite o número da vaga: ");
+        String numeroVaga = scanner.nextLine();
+
+        String idVaga = fila + String.format("%02d", Integer.parseInt(numeroVaga));
+
+        Vaga vagaEncontrada = estacionamento.getVagas().stream()
+                .filter(v -> v.getId().equals(idVaga) && v.estaDisponivel() &&
+                        ((tipoVaga == 1 && v instanceof Normal) ||
+                                (tipoVaga == 2 && v instanceof Idoso) ||
+                                (tipoVaga == 3 && v instanceof Pcd) ||
+                                (tipoVaga == 4 && v instanceof Vip)))
+                .findFirst()
+                .orElse(null);
+
+        if (vagaEncontrada != null) {
+            vagaEncontrada.ocupaVaga(veiculo); // Passa o veículo para o método
+            System.out.println("Vaga ocupada com sucesso!");
+        } else {
+            System.out.println("Vaga não encontrada ou já está ocupada.");
+        }
+    }
+
+    public static void desocuparVaga(Scanner scanner, Estacionamento estacionamento) {
+        System.out.println("Digite seu nome:");
+        String nomeCliente = scanner.nextLine();
+
+        System.out.println("Digite a letra da fila (A, B ou C) da vaga:");
+        String fila = scanner.nextLine().toUpperCase();
+
+        System.out.print("Digite o número da vaga: ");
+        String numeroVaga = scanner.nextLine();
+
+        String idVaga = fila + String.format("%02d", Integer.parseInt(numeroVaga));
+
+        Vaga vagaEncontrada = estacionamento.getVagas().stream()
+                .filter(v -> v.getId().equals(idVaga) && !v.estaDisponivel())
+                .findFirst()
+                .orElse(null);
+
+        if (vagaEncontrada != null) {
+            Date horaSaida = new Date(); // Registra a hora de saída
+            Cobranca cobranca = new Cobranca(vagaEncontrada.getVeiculo(), vagaEncontrada, new Date());
+            cobranca.registrarSaida(horaSaida);
+            vagaEncontrada.desocupaVaga();
+            System.out.println("Vaga desocupada e cobrança registrada com sucesso!");
+        } else {
+            System.out.println("Vaga não encontrada ou já está livre.");
+        }
+    }
+
+    public static void salvarClientes(List<Cliente> clientes) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("clientes.dat"))) {
+            oos.writeObject(clientes);
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar clientes: " + e.getMessage());
+        }
+    }
+
+    public static List<Cliente> carregarClientes() {
+        List<Cliente> clientes = new ArrayList<>();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("clientes.dat"))) {
+            clientes = (List<Cliente>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Erro ao carregar clientes: " + e.getMessage());
+        }
+        return clientes;
     }
 }
