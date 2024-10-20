@@ -1,56 +1,40 @@
 package estacionamento;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Cliente {
+public class Cliente implements Serializable {
+    private static int contador = 0;
+    private int idCliente;
     private String nome;
     private List<Veiculo> veiculos;
-    private final int idCliente;
-    private static int contadorClientes = 0;
 
     public Cliente(String nome) {
+        this.idCliente = ++contador;
         this.nome = nome;
         this.veiculos = new ArrayList<>();
-        this.idCliente = gerarIdCliente();
-    }
-
-    private int gerarIdCliente() {
-        contadorClientes++;
-        return contadorClientes;
-    }
-
-    public void registrarVeiculo(Veiculo veiculo) {
-        veiculos.add(veiculo);
-    }
-
-    public void mostraVeiculosDoCliente() {
-    System.out.println("\nVeículos registrados para o cliente " + nome + ":");
-    if (veiculos.isEmpty()) {
-        System.out.println("Nenhum veículo registrado.");
-    } else {
-        for (Veiculo veiculo : veiculos) {
-            System.out.println("Placa: " + veiculo.getPlaca());
-        }
-      }
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public int getIdCliente() {
         return idCliente;
     }
 
-    public List<Veiculo> getVeiculos() {
-        return veiculos;
+    public String getNome() {
+        return nome;
     }
 
-    public void setVeiculos(List<Veiculo> veiculos) {
-        this.veiculos = veiculos;
+    public void registrarVeiculo(Veiculo veiculo) {
+        veiculos.add(veiculo);
+    }
+
+    public static void atualizarContador(int maxId) {
+        if (maxId > contador) {
+            contador = maxId;
+        }
+    }
+
+    public List<Veiculo> getVeiculos() {
+        return veiculos;
     }
 }
