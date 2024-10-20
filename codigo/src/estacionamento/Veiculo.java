@@ -1,14 +1,12 @@
 package estacionamento;
 
-public class Veiculo {
-    private final String placa;
+import java.io.Serializable;
+
+public class Veiculo implements Serializable {
+    private String placa;
 
     public Veiculo(String placa) {
         this.placa = placa;
-    }
-
-    public void mostrarVeiculo() {
-        System.out.println("\nVeículo placa: " + placa);
     }
 
     public String getPlaca() {
