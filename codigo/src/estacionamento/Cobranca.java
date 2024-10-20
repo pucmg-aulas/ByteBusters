@@ -21,85 +21,39 @@ public class Cobranca {
 
     public void registrarSaida(Date horaSaida) {
         this.horaSaida = horaSaida;
-        escreverRelatorio();
+        double valor = calcularValor();
+        gravarRelatorio(valor);
     }
 
-    public int calculaTempoOcupacao() {
-        long diferencaEmMilissegundos = horaSaida.getTime() - horaChegada.getTime();
-        return (int) ((diferencaEmMilissegundos / 1000.0) / 60.0);
+    private double calcularValor() {
+        long tempoEstacionado = horaSaida.getTime() - horaChegada.getTime();
+        double horasEstacionadas = Math.ceil((tempoEstacionado / (1000 * 60)) / 15.0);
+        double valor = horasEstacionadas * PRECO15MIN;
+        return Math.min(valor, PRECOMAX);
     }
 
-    public double calculaValorTotal() {
-        double tempoOcupacao = calculaTempoOcupacao();
-        double precoBase;
-
-        if (tempoOcupacao <= 15) {
-            precoBase = PRECO15MIN;
-        } else if (tempoOcupacao <= 180) {
-            precoBase = Math.ceil(tempoOcupacao / 15) * PRECO15MIN;
-        } else {
-            precoBase = PRECOMAX;
-        }
-
-        precoBase *= vaga.getFatorPreco();
-
-        return precoBase;
-    }
-
-    public void mostrarCobranca() {
-        SimpleDateFormat dataFormatada = new SimpleDateFormat("HH:mm:ss"); // Formato hora:minuto:segundo
-        String chegadaFormatada = dataFormatada.format(horaChegada);
-        String saidaFormatada = dataFormatada.format(horaSaida);
-
-        System.out.println("\nPlaca do veículo: " + veiculo.getPlaca());
-        System.out.println("Vaga: " + vaga.getId());
-        System.out.println("Hora de chegada: " + chegadaFormatada);
-        System.out.println("Hora de saída: " + saidaFormatada);
-        System.out.println("Tempo de ocupação: " + calculaTempoOcupacao() + " minutos");
-        System.out.println("Valor total a ser pago: R$ " + calculaValorTotal());
-    }
-
-    private void escreverRelatorio() {
-        SimpleDateFormat dataFormatada = new SimpleDateFormat("HH:mm:ss");
-        String chegadaFormatada = dataFormatada.format(horaChegada);
-        String saidaFormatada = dataFormatada.format(horaSaida);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(NOME_ARQUIVO, true))) {
-            writer.write("Placa do veículo: " + veiculo.getPlaca());
-            writer.newLine();
-            writer.write("Vaga: " + vaga.getId());
-            writer.newLine();
-            writer.write("Hora de chegada: " + chegadaFormatada);
-            writer.newLine();
-            writer.write("Hora de saída: " + saidaFormatada);
-            writer.newLine();
-            writer.write("Tempo de ocupação: " + calculaTempoOcupacao() + " minutos");
-            writer.newLine();
-            writer.write("Valor total a ser pago: R$ " + calculaValorTotal());
-            writer.newLine();
-            writer.write("----------------------------");
-            writer.newLine();
+    private void gravarRelatorio(double valor) {
+        try (FileWriter writer = new FileWriter(NOME_ARQUIVO, true);
+             BufferedWriter bw = new BufferedWriter(writer)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            bw.write("Veículo: " + veiculo.getPlaca() + ", Vaga: " + vaga.getId() +
+                    ", Hora Chegada: " + sdf.format(horaChegada) +
+                    ", Hora Saída: " + sdf.format(horaSaida) +
+                    ", Valor Cobrado: R$ " + valor);
+            bw.newLine();
         } catch (IOException e) {
-            System.out.println("Erro ao escrever no arquivo: " + e.getMessage());
+            System.out.println("Erro ao gravar relatório: " + e.getMessage());
         }
     }
 
     public static void lerRelatorio() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(NOME_ARQUIVO))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(NOME_ARQUIVO))) {
             String linha;
-            while ((linha = reader.readLine()) != null) {
+            while ((linha = br.readLine()) != null) {
                 System.out.println(linha);
             }
         } catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo: " + e.getMessage());
+            System.out.println("Erro ao ler relatório: " + e.getMessage());
         }
-    }
-
-    public Veiculo getVeiculo() {
-        return veiculo;
-    }
-
-    public Vaga getVaga() {
-        return vaga;
     }
 }
