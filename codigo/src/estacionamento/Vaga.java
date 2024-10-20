@@ -2,23 +2,17 @@ package estacionamento;
 
 public abstract class Vaga {
     private String id;
-    private String fila;
-    private int numVaga;
     private boolean disponivel;
-    protected double fatorPreco;
-    private String tipoVaga;
+    protected double fatorPreco; // Fator de preço
+    private Veiculo veiculo; // Referência ao veículo
 
-    public Vaga(String fila, int numVaga, String tipoVaga) {
-        this.fila = fila;
-        this.numVaga = numVaga;
+    public Vaga(String fila, int numero) {
+        this.id = fila + String.format("%02d", numero);
         this.disponivel = true;
-        this.tipoVaga = tipoVaga;
-        calcularID(fila, numVaga);
+        this.fatorPreco = 1.0; // Valor padrão
     }
 
-    public void calcularID(String fila, int numVaga) {
-        this.id = fila + String.format("%02d", numVaga);
-    }
+    public abstract String getTipoVaga(); // Método abstrato para ser sobrescrito
 
     public String getId() {
         return id;
@@ -28,19 +22,21 @@ public abstract class Vaga {
         return disponivel;
     }
 
-    public void ocupaVaga() {
+    public void ocupaVaga(Veiculo veiculo) {
+        this.veiculo = veiculo; // Atribui o veículo à vaga
         this.disponivel = false;
     }
 
     public void desocupaVaga() {
+        this.veiculo = null; // Remove o veículo da vaga
         this.disponivel = true;
     }
 
-    public double getFatorPreco() {
-        return fatorPreco;
+    public Veiculo getVeiculo() {
+        return veiculo; // Método para obter o veículo associado
     }
 
-    public String getTipoVaga() {
-        return tipoVaga;
+    public double getFatorPreco() {
+        return fatorPreco; // Método para obter o fator de preço
     }
 }
