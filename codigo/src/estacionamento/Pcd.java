@@ -1,9 +1,13 @@
 package estacionamento;
 
 public class Pcd extends Vaga {
+    public Pcd(String fila, int numero) {
+        super(fila, numero);
+        this.fatorPreco = 0.5; // Exemplo de fator de preço
+    }
 
-    public Pcd(String fila, int numVaga) {
-        super(fila, numVaga, "PCD");
-        this.fatorPreco = 0.87; // 13% de desconto
+    @Override
+    public String getTipoVaga() {
+        return "PCD";
     }
 }
