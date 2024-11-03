@@ -1,39 +1,59 @@
 package view;
 
 import javax.swing.*;
-import java.awt.*;
+import controller.ClienteController;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CadastrarVeiculoView extends JFrame {
     private JTextField txtPlaca;
-    private JComboBox<String> cmbClientes;
-    private JButton btnCadastrar, btnVoltar;
+    private JTextField txtClienteId;
+    private JButton btnConfirmar;
 
-    public CadastrarVeiculoView() {
-        setTitle("Cadastro de Veículo");
-        setSize(300, 200);
+    public CadastrarVeiculoView(ClienteController clienteController) {
+        setTitle("Cadastrar Veículo");
+        setSize(400, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLayout(null);
 
-        JPanel panel = new JPanel(new GridLayout(3, 2, 5, 5));
+        JLabel labelPlaca = new JLabel("Placa do Veículo:");
+        labelPlaca.setBounds(50, 30, 120, 25);
+        add(labelPlaca);
 
-        panel.add(new JLabel("Placa:"));
         txtPlaca = new JTextField();
-        panel.add(txtPlaca);
+        txtPlaca.setBounds(180, 30, 150, 25);
+        add(txtPlaca);
 
-        panel.add(new JLabel("Cliente:"));
-        cmbClientes = new JComboBox<>(); // Você deve popular o comboBox com os clientes existentes
-        panel.add(cmbClientes);
+        JLabel labelCliente = new JLabel("ID do Cliente:");
+        labelCliente.setBounds(50, 70, 120, 25);
+        add(labelCliente);
 
-        btnCadastrar = new JButton("Cadastrar Veículo");
-        btnVoltar = new JButton("Voltar");
+        txtClienteId = new JTextField();
+        txtClienteId.setBounds(180, 70, 150, 25);
+        add(txtClienteId);
 
-        JPanel btnPanel = new JPanel();
-        btnPanel.add(btnCadastrar);
-        btnPanel.add(btnVoltar);
+        btnConfirmar = new JButton("Confirmar");
+        btnConfirmar.setBounds(100, 110, 200, 30);
+        add(btnConfirmar);
 
-        add(panel, BorderLayout.CENTER);
-        add(btnPanel, BorderLayout.SOUTH);
+        btnConfirmar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String placa = txtPlaca.getText();
+                String clienteId = txtClienteId.getText();
+        
+                boolean sucesso = ClienteController.cadastrarVeiculo(clienteId, placa);
+        
+                if (sucesso) {
+                    JOptionPane.showMessageDialog(null, "Veículo cadastrado com sucesso.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar veículo. Verifique o ID do cliente.");
+                }
+                dispose();
+            }
+        });
+        
+
+        setVisible(true);
     }
 
     public String getPlaca() {
@@ -41,21 +61,15 @@ public class CadastrarVeiculoView extends JFrame {
     }
 
     public String getClienteSelecionado() {
-        return (String) cmbClientes.getSelectedItem();
-    }
-
-    public void setClientes(String[] clientes) {
-        cmbClientes.removeAllItems();
-        for (String cliente : clientes) {
-            cmbClientes.addItem(cliente);
-        }
-    }
-
-    public void addCadastrarListener(ActionListener listener) {
-        btnCadastrar.addActionListener(listener);
-    }
-
-    public void addVoltarListener(ActionListener listener) {
-        btnVoltar.addActionListener(listener);
+        return txtClienteId.getText();
     }
 }
+
+
+//public void addCadastrarListener(ActionListener listener) {
+    //btnCadastrar.addActionListener(listener);
+//}
+
+//public void addVoltarListener(ActionListener listener) {
+    //btnVoltar.addActionListener(listener);
+//}

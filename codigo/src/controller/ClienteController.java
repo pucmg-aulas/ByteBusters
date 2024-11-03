@@ -13,7 +13,7 @@ public class ClienteController {
         return cliente;
     }
 
-    public static void cadastrarVeiculo(String idCliente, String placa) {
+    public static boolean cadastrarVeiculo(String idCliente, String placa) {
         Cliente cliente = clientes.stream()
                 .filter(c -> c.getIdCliente().equals(idCliente))
                 .findFirst()
@@ -22,6 +22,9 @@ public class ClienteController {
         if (cliente != null) {
             Veiculo veiculo = new Veiculo(placa, cliente);
             cliente.adicionarVeiculo(veiculo);
+            return true;
+        } else {
+            return false;
         }
     }
 
