@@ -12,7 +12,6 @@ public class EstacionamentoController {
     }
 
     public boolean ocuparVaga(String placa, String tipoDeVaga) {
-        // Filtra as vagas disponíveis do tipo selecionado
         Optional<Vaga> vagaDisponivel = estacionamento.getVagas().stream()
                 .filter(vaga -> vaga.isDisponivel() && vaga.getTipo().equals(tipoDeVaga))
                 .findFirst();
@@ -20,7 +19,6 @@ public class EstacionamentoController {
         if (vagaDisponivel.isPresent()) {
             Vaga vaga = vagaDisponivel.get();
     
-            // Procura pelo veículo e cliente usando a placa
             Optional<Cliente> clienteOpt = ClienteController.getClientes().stream()
                     .filter(cliente -> cliente.getVeiculos().stream()
                             .anyMatch(veiculo -> veiculo.getPlaca().equals(placa)))
@@ -52,7 +50,6 @@ public class EstacionamentoController {
             cobranca.registrarSaida(LocalDateTime.now());
             cobranca.getVaga().desocupar();
             
-            // Gerar o recibo com os detalhes da cobrança
             String recibo = "Recibo de Cobrança\n"
                             + "Placa: " + cobranca.getVeiculo().getPlaca() + "\n"
                             + "Hora de Entrada: " + cobranca.getHoraEntrada() + "\n"
@@ -62,15 +59,7 @@ public class EstacionamentoController {
             return recibo;
         }
         
-        return null;  // Retorna null se a cobrança não for encontrada ou o veículo não estiver estacionado
-    }
-    
-
-    private Cliente buscarCliente(String idCliente) {
-        return ClienteController.getClientes().stream()
-                .filter(c -> c.getIdCliente().equals(idCliente))
-                .findFirst()
-                .orElse(null);
+        return null;
     }
 
     public Estacionamento getEstacionamento() {

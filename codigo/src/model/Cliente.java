@@ -19,6 +19,10 @@ public class Cliente {
         veiculos.add(veiculo);
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     public String getIdCliente() {
         return idCliente;
     }

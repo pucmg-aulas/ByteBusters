@@ -64,12 +64,3 @@ public class CadastrarVeiculoView extends JFrame {
         return txtClienteId.getText();
     }
 }
-
-
-//public void addCadastrarListener(ActionListener listener) {
-    //btnCadastrar.addActionListener(listener);
-//}
-
-//public void addVoltarListener(ActionListener listener) {
-    //btnVoltar.addActionListener(listener);
-//}

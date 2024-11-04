@@ -47,6 +47,4 @@ public class Cobranca {
     public Vaga getVaga() {
         return vaga;
     }
-
-    // Getters e métodos adicionais para obter informações da cobrança
 }

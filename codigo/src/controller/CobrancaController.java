@@ -1,11 +1,15 @@
 package controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import dao.CobrancaDAO;
 import model.*;
 
 public class CobrancaController {
     private static List<Cobranca> cobrancasAtivas = new ArrayList<>();
+    private static CobrancaDAO cobrancaDAO = new CobrancaDAO();
 
     public static void adicionarCobranca(Cobranca cobranca) {
         cobrancasAtivas.add(cobranca);
@@ -18,10 +22,16 @@ public class CobrancaController {
                 .orElse(null);
     }
 
-    public static double calcularValorCobranca(String placa) {
+    public static double calcularValorCobranca(String placa, LocalDateTime horaSaida) {
         Cobranca cobranca = buscarCobrancaAtivaPorPlaca(placa);
         if (cobranca != null) {
-            return cobranca.calcularValor();
+            cobranca.registrarSaida(horaSaida);
+            double valor = cobranca.calcularValor();
+
+            // Salvar a cobrança no arquivo
+            cobrancaDAO.salvarCobranca(cobranca);
+
+            return valor;
         }
         return 0;
     }
