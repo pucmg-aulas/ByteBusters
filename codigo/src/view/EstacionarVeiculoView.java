@@ -11,7 +11,7 @@ public class EstacionarVeiculoView extends JFrame {
     public EstacionarVeiculoView(EstacionamentoController estacionamentoController) {
         this.estacionamentoController = estacionamentoController;
         setTitle("Estacionar Veículo");
-        setSize(400, 200);
+        setSize(400, 250);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
 
@@ -23,16 +23,25 @@ public class EstacionarVeiculoView extends JFrame {
         txtPlaca.setBounds(180, 30, 150, 25);
         add(txtPlaca);
 
+        JLabel labelTipoDeVaga = new JLabel("Tipo de Vaga:");
+        labelTipoDeVaga.setBounds(50, 70, 120, 25);
+        add(labelTipoDeVaga);
+
+        JComboBox<String> cmbTiposDeVaga = new JComboBox<>(new String[] {"Normal", "Pcd", "Idoso", "Vip"});
+        cmbTiposDeVaga.setBounds(180, 70, 150, 25);
+        add(cmbTiposDeVaga);
+
         JButton btnConfirmar = new JButton("Confirmar");
-        btnConfirmar.setBounds(100, 70, 200, 30);
+        btnConfirmar.setBounds(100, 120, 200, 30);
         add(btnConfirmar);
 
         btnConfirmar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String placa = txtPlaca.getText().trim();
+                String tipoDeVaga = (String) cmbTiposDeVaga.getSelectedItem();
 
                 if (!placa.isEmpty()) {
-                    boolean sucesso = estacionamentoController.ocuparVaga(placa);
+                    boolean sucesso = estacionamentoController.ocuparVaga(placa, tipoDeVaga);
 
                     if (sucesso) {
                         JOptionPane.showMessageDialog(null, "Veículo estacionado com sucesso.");

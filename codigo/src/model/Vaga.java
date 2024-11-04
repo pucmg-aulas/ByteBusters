@@ -20,4 +20,6 @@ public abstract class Vaga {
     }
 
     public abstract double getFatorPreco();
+
+    public abstract String getTipo();
 }

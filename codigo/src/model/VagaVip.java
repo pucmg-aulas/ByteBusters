@@ -5,4 +5,9 @@ class VagaVip extends Vaga {
     public double getFatorPreco() {
         return 1.2;  // 20% de acréscimo
     }
+
+    @Override
+    public String getTipo() {
+        return "Vip";
+    }
 }

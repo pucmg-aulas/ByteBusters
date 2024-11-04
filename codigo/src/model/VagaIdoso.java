@@ -5,4 +5,9 @@ class VagaIdoso extends Vaga {
     public double getFatorPreco() {
         return 0.9;  // 10% de desconto
     }
+
+    @Override
+    public String getTipo() {
+        return "Idoso";
+    }
 }

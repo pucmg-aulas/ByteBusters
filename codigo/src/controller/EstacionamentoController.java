@@ -11,16 +11,16 @@ public class EstacionamentoController {
         this.estacionamento = new Estacionamento(nome, endereco, totalVagas);
     }
 
-    public boolean ocuparVaga(String placa) {
-        // Encontra a primeira vaga disponível
+    public boolean ocuparVaga(String placa, String tipoDeVaga) {
+        // Filtra as vagas disponíveis do tipo selecionado
         Optional<Vaga> vagaDisponivel = estacionamento.getVagas().stream()
-                .filter(Vaga::isDisponivel)
+                .filter(vaga -> vaga.isDisponivel() && vaga.getTipo().equals(tipoDeVaga))
                 .findFirst();
     
         if (vagaDisponivel.isPresent()) {
             Vaga vaga = vagaDisponivel.get();
     
-            // Procura pelo veículo e cliente usando apenas a placa
+            // Procura pelo veículo e cliente usando a placa
             Optional<Cliente> clienteOpt = ClienteController.getClientes().stream()
                     .filter(cliente -> cliente.getVeiculos().stream()
                             .anyMatch(veiculo -> veiculo.getPlaca().equals(placa)))
