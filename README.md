@@ -9,9 +9,7 @@ O projeto Xulambs Parking visa desenvolver uma solução de software para gerenc
 * Áulus Arcanjo Alves Batista
 * Henrique Leite Najar
 * Kayque Allan Ribeiro Freitas
-* Matheus Santos Dias Gomes
 * Rafael de Oliveira Caldeira Lopes
-* Victor Sverberi Maia
 
 ## Professor responsável 
 
