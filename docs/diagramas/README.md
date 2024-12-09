@@ -24,3 +24,9 @@ Coloque aqui todas as versões do seu diagrama de classes. Cada versão deve com
 
 ## Versão 1.7
 ![diagrama1.7](https://github.com/pucmg-aulas/ByteBusters/blob/master/docs/diagramas/diagrama1.7.jpg)
+
+## Versão Final 
+![Versão Final](https://github.com/pucmg-aulas/ByteBusters/blob/master/docs/diagramas/DiagramaFinal.jpeg)
+
+# Diagramas de Entidade
+![DiagramaDeEntidade](https://github.com/pucmg-aulas/ByteBusters/blob/master/docs/diagramas/DiagramaEntidade-Relacionamento.jpeg)
