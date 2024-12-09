@@ -7,7 +7,6 @@ O projeto Xulambs Parking visa desenvolver uma solução de software para gerenc
 ## Alunos integrantes da equipe
 
 * Áulus Arcanjo Alves Batista
-* Henrique Leite Najar
 * Kayque Allan Ribeiro Freitas
 * Rafael de Oliveira Caldeira Lopes
 
