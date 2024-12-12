@@ -77,6 +77,12 @@ public class ListarEstacionamentosView extends JFrame {
         JPanel topoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topoPanel.add(adicionarButton);
         panel.add(topoPanel, BorderLayout.NORTH);
+
+        // Texto de instrução
+        JLabel textoInstrucao = new JLabel("Clique com o botão direito para ver ou remover um estacionamento.");
+        textoInstrucao.setHorizontalAlignment(SwingConstants.CENTER);
+        textoInstrucao.setFont(new Font("Arial", Font.ITALIC, 12));
+        panel.add(textoInstrucao, BorderLayout.SOUTH);
     }
 
     // Método para criar botões com estilo consistente
